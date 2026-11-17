@@ -1,0 +1,8 @@
+# Inferred from source imports; versions and full runtime are not yet verified.
+Django
+ultralytics
+opencv-python
+tensorflow
+scikit-learn
+numpy
+matplotlib

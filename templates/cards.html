@@ -1,0 +1,322 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+<div class="container mt-5">
+  <h1>Image Data Training</h1>
+  <br>
+
+  {% if images_dict %}
+  <div class="row">
+    {% for key, values in images_dict.items %}
+
+    <div class="col-lg-4">
+      <div id="cardContainer">
+        <!-- Card with input title, camera, and upload buttons -->
+        <div class="card mb-3 shadow-lg p-3 mb-5 bg-body rounded">
+          <div class="card-header">
+            <h4>{{key}}</h4>
+          </div>
+          <div class="card-body">
+            <div class="row col-lg-12" style="height: 100px; overflow-y: auto;">
+              {% for value in values %}
+              <div class="col-lg-3 m-0">
+                <img class="img-fluid mb-1" src="../media/{{value}}" alt="../media/{{value}}">
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div class="row">
+    <div class="col-lg-6">
+      <div id="cardContainer">
+        <!-- Card with input title, camera, and upload buttons -->
+        <div class="card mb-3 shadow-lg p-3 mb-5 bg-body rounded">
+          <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="card-header">
+              <div class="row col-lg-12">
+                <div class="col-lg-5">
+                  <input type="text" class="form-control" placeholder="Title" name="class_name" id="class_name"
+                    required>
+                </div>
+                <div class="col-lg-5">
+                    <select class="form-control" name="coco_classes" id="coco_classes" placeholder="Select Class Type" required>
+                      <option value="0">person</option>
+                      <option value="1">bicycle</option>
+                      <option value="2">car</option>
+                      <option value="3">motorcycle</option>
+                      <option value="4">airplane</option>
+                      <option value="5">bus</option>
+                      <option value="6">train</option>
+                      <option value="7">truck</option>
+                      <option value="8">boat</option>
+                      <option value="9">traffic light</option>
+                      <option value="10">fire hydrant</option>
+                      <option value="11">stop sign</option>
+                      <option value="12">parking meter</option>
+                      <option value="13">bench</option>
+                      <option value="14">bird</option>
+                      <option value="15">cat</option>
+                      <option value="16">dog</option>
+                      <option value="17">horse</option>
+                      <option value="18">sheep</option>
+                      <option value="19">cow</option>
+                      <option value="20">elephant</option>
+                      <option value="21">bear</option>
+                      <option value="22">zebra</option>
+                      <option value="23">giraffe</option>
+                      <option value="24">backpack</option>
+                      <option value="25">umbrella</option>
+                      <option value="26">handbag</option>
+                      <option value="27">tie</option>
+                      <option value="28">suitcase</option>
+                      <option value="29">frisbee</option>
+                      <option value="30">skis</option>
+                      <option value="31">snowboard</option>
+                      <option value="32">sports ball</option>
+                      <option value="33">kite</option>
+                      <option value="34">baseball bat</option>
+                      <option value="35">baseball glove</option>
+                      <option value="36">skateboard</option>
+                      <option value="37">surfboard</option>
+                      <option value="38">tennis racket</option>
+                      <option value="39">bottle</option>
+                      <option value="40">wine glass</option>
+                      <option value="41">cup</option>
+                      <option value="42">fork</option>
+                      <option value="43">knife</option>
+                      <option value="44">spoon</option>
+                      <option value="45">bowl</option>
+                      <option value="46">banana</option>
+                      <option value="47">apple</option>
+                      <option value="48">sandwich</option>
+                      <option value="49">orange</option>
+                      <option value="50">broccoli</option>
+                      <option value="51">carrot</option>
+                      <option value="52">hot dog</option>
+                      <option value="53">pizza</option>
+                      <option value="54">donut</option>
+                      <option value="55">cake</option>
+                      <option value="56">chair</option>
+                      <option value="57">couch</option>
+                      <option value="58">potted plant</option>
+                      <option value="59">bed</option>
+                      <option value="60">dining table</option>
+                      <option value="61">toilet</option>
+                      <option value="62">tv</option>
+                      <option value="63">laptop</option>
+                      <option value="64">mouse</option>
+                      <option value="65">remote</option>
+                      <option value="66">keyboard</option>
+                      <option value="67">cell phone</option>
+                      <option value="68">microwave</option>
+                      <option value="69">oven</option>
+                      <option value="70">toaster</option>
+                      <option value="71">sink</option>
+                      <option value="72">refrigerator</option>
+                      <option value="73">book</option>
+                      <option value="74">clock</option>
+                      <option value="75">vase</option>
+                      <option value="76">scissors</option>
+                      <option value="77">teddy bear</option>
+                      <option value="78">hair drier</option>
+                      <option value="79">toothbrush</option>
+                    </select>
+                </div>
+                <div class="col-lg-2">
+                  <button class="btn btn-danger" onclick="deleteCard(this)"><i class="fa fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <!-- Camera Section -->
+              <div id="cameraSection1">
+                <button type="submit" name="capture_image" class="btn btn-dark"><i class="fa fa-camera"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-3 mb-lg-5">
+      <div class="card shadow-lg p-3 mb-5 bg-body rounded" style="width: 15rem;">
+        <div class="card-body">
+          <form action="" method="post" enctype="multipart/form-data" id="trainForm">
+            {% csrf_token %}
+            <h5 class="card-title">Training</h5>
+            <button type="submit" class="btn btn-outline-dark w-100 mt-4" name="train" id="trainForm">
+              Train Model
+            </button>
+            <div class="modal fade" id="trainModal" tabindex="-1" aria-labelledby="trainModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content text-center">
+                  <div class="modal-header">
+                    <h5 class="modal-title w-100" id="trainModalLabel">Training Started</h5>
+                  </div>
+                  <div class="modal-body">
+                    Please wait while your model is training...
+                    <div class="spinner-border text-primary mt-3" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-3 mb-lg-5">
+      <div class="card shadow-lg p-3 bg-body rounded" style="width: 20rem;">
+        <div class="card-body">
+          <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <h5 class="card-title">Preview</h5>
+            <button type="submit" class="btn btn-outline-dark w-100" name="test"> <i class='fas fa-file-export'></i>Open Camera
+              </button>
+            <hr>
+            <p>You must train a model on the left before you can preview it here.</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Add button to create a new card -->
+  <button class="btn btn-outline-dark m-2 w-25" onclick="addCard()">Add Class</button>
+  <form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <button class="btn btn-success m-2 w-25" type="submit" name="download_model">Download Trained Package</button>
+  </form>
+  <a href="{% url 'projects' %}" class="btn btn-dark m-2 w-25">Go to Dashboard</a>
+</div>
+
+<script>
+  var currentVideoElement = null; // Variable to store the current video element
+  var currentImageCaptureSection = null; // Variable to store the current image capture section
+
+  function addCard() {
+    // Turn off the camera of the previous card, if any
+    stopCamera();
+
+    // Create a new card element
+    var newCard = document.createElement('div');
+    newCard.className = 'card mb-3 shadow-lg p-3 mb-5 bg-body rounded';
+
+    // Define the card header
+    var cardHeader = document.createElement('div');
+    cardHeader.className = 'card-header';
+    cardHeader.innerHTML = `
+      <div class="row col-lg-12">
+          <div class="col-lg-10">
+              <input type="text" class="form-control" placeholder="Title" name="class" required>
+          </div>
+          <div class="col-lg-2">
+              <button class="btn btn-danger" onclick="deleteCard(this)"><i class="fa fa-trash"></i></button>
+          </div>
+      </div>
+  `;
+    newCard.appendChild(cardHeader);
+
+    // Define the card body
+    var cardBody = document.createElement('div');
+    cardBody.className = 'card-body';
+    cardBody.innerHTML = `
+      <div id="cameraSection${document.querySelectorAll('.card').length + 1}">
+          <button class="btn btn-dark" onclick="openCamera(${document.querySelectorAll('.card').length + 1})"><i class="fa fa-camera"></i></button>
+      </div>
+      <div id="imageCaptureSection${document.querySelectorAll('.card').length + 1}" class="row" style="max-height: 300px; overflow-y: auto;"></div>
+  `;
+    newCard.appendChild(cardBody);
+
+    // Append the new card to the container
+    var cardContainer = document.getElementById('cardContainer');
+    cardContainer.appendChild(newCard);
+  }
+
+  function deleteCard(button) {
+    // Get the card element and remove it from the container
+    var card = button.closest('.card');
+    card.remove();
+  }
+
+  function openCamera(cardNumber) {
+    // If camera is already open for a class, stop it before opening for another class
+    if (currentVideoElement) {
+      stopCamera();
+    }
+
+    // Access the video element
+    var videoElement = document.createElement('video');
+    videoElement.setAttribute('autoplay', '');
+    videoElement.setAttribute('playsinline', '');
+    videoElement.style.height = '150px'; // Adjust the height as needed
+
+    // Access the user's camera
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(function (stream) {
+        // Attach the camera stream to the video element
+        videoElement.srcObject = stream;
+        // Replace the button with the video element
+        var cameraSection = document.getElementById(`cameraSection${cardNumber}`);
+        cameraSection.innerHTML = '';
+        cameraSection.appendChild(videoElement);
+
+        // Store the current video element
+        currentVideoElement = videoElement;
+
+        // Create a capture button
+        var captureButton = document.createElement('button');
+        captureButton.className = 'btn btn-primary mt-2';
+        captureButton.innerText = 'Capture Image';
+        captureButton.onclick = function () {
+          captureImage(videoElement, cardNumber); // Call function to capture image
+          captureButton.style.display = 'none'; // Hide the capture button after capturing an image
+        };
+        cameraSection.appendChild(captureButton);
+
+        // Store the current image capture section
+        currentImageCaptureSection = document.getElementById(`imageCaptureSection${cardNumber}`);
+      })
+      .catch(function (error) {
+        console.error('Error accessing the camera:', error);
+      });
+  }
+
+  function stopCamera() {
+    if (currentVideoElement) {
+      // Stop the camera stream and remove the video element
+      var stream = currentVideoElement.srcObject;
+      var tracks = stream.getTracks();
+      tracks.forEach(function (track) {
+        track.stop();
+      });
+      currentVideoElement.srcObject = null;
+      currentVideoElement = null;
+    }
+  }
+
+
+
+</script>
+<script>
+  document.getElementById('trainForm').addEventListener('submit', function() {
+    // Show modal
+    const modal = new bootstrap.Modal(document.getElementById('trainModal'), {
+      backdrop: 'static',
+      keyboard: false
+    });
+    modal.show();
+  });
+</script>
+
+
+{% endblock body %}
